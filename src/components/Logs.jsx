@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-
 const URL = "ws://localhost:8000/ws/v1";
-
+const isBrowser = typeof window !== 'undefined'
 const Logs = () => {
-  const clientRef = useRef(null);
-  const [webSocket, setWebSocket] = useState(null);
+  const [ws, setWebSocket] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const [msg, setMsg] = useState("");
@@ -14,32 +12,30 @@ const Logs = () => {
   let feeds = []
   useEffect(() => {
     handleWebSocket()
-  }, [webSocket])
+  }, [ws])
 
   // Only set up the websocket once
   // if (!clientRef.current) {
-  //   const webSocket = new WebSocket(URL);
+  //   const webSocket = new Websocket(URL, 'echo-protocol');
   //   clientRef.current = webSocket;
 
   //   window.webSocket = webSocket;
 
   //   webSocket.onerror = (e) => console.error(e);
 
-  if (webSocket) {
-    webSocket.onopen = () => {
+  if (ws) {
+    ws.onopen = () => {
       console.log("ws opened");
       setIsOpen(true);
-      webSocket.send("ping");
     };
 
-    webSocket.onclose = () => {
+    ws.onclose = () => {
       setIsOpen(false);
       setTimeout(() => {
         reconnect()
       }, 1000)
       console.log("ws closed");
     }
-
   }
 
   // // // Setting this will trigger a re-run of the effect,
@@ -51,67 +47,69 @@ const Logs = () => {
   // // the socket will be set up again
   // setTimeout(() => setWaitingToReconnect(null), 5000);
 
-const reconnect = () => {
-  if (!isOpen) {
-    setWebSocket(new WebSocket(URL))
-    setIsOpen(true)
+  const reconnect = () => {
+    if (!isOpen) {
+        setWebSocket(new WebSocket(URL, 'echo-protocol'))
+      setIsOpen(true)
+    }
   }
-}
 
-const handleWebSocket = () => {
-  if (webSocket) {
-    webSocket.onmessage = (message) => {
-      const parsedData = JSON.parse(message.data);
-      feeds.push(parsedData)
-      console.log("feeedss ->>> " + feeds)
-      setMessages(parsedData)
-      setTime(parsedData.time);
-      setMsg(parsedData.message);
-      setType(parsedData.type);
-    };
-  } else {
-    setWebSocket(new WebSocket(URL))
+  const handleWebSocket = () => {
+    if (isBrowser) {
+      if (ws) {
+        ws.onmessage = (message) => {
+          const parsedData = JSON.parse(message.data);
+          feeds.push(message.data)
+          console.log("feeedss ->>> " + JSON.stringify(feeds))
+          setMessages(parsedData)
+          setTime(parsedData.time);
+          setMsg(parsedData.message);
+          setType(parsedData.type);
+        };
+      } else {
+        setWebSocket(new WebSocket(URL, 'echo-protocol'))
+      }
+    }
   }
-}
 
 
 
-// return () => {
-//   console.log("Cleanup");
-//   // Dereference, so it will set up next time
-//   clientRef.current = null;
+  // return () => {
+  //   console.log("Cleanup");
+  //   // Dereference, so it will set up next time
+  //   clientRef.current = null;
 
-//   webSocket.close();
-// };
-
-
-
-const yearFormat = time.slice(0, 10);
-const timerFormat = time.slice(11, 19);
-console.log(messages.type);
-if (messages.type === "TRADING_REPORT") {
-
-}
+  //   webSocket.close();
+  // };
 
 
-return (
-  <>
-    <div className="bg-transparent float-left w-[49%] h-[95%]  absolute left-0 bottom-0 ">
-      <h1 className="text-yellow-300">Websocket {isOpen ? "Connected" : "Disconnected"}</h1>
-      {webSocket && <p className="text-yellow-300">Reconnecting momentarily...</p>}
-      <p className="text-sm text-white">
-        🕑 Time : {timerFormat} {yearFormat}
-      </p>
-      <p className=" text-sm text-white"> 🔴 Status : {messages.type === "FEED" ? messages.message : ""}</p>
-    </div>
 
-    <div className="bg-transparent float-left w-[49%]  h-[95%] absolute right-0 bottom-0">
-      <h1 className=" text-sm text-yellow-300"> 🔴 Ordered</h1>
-      {messages.type === "TRADING_REPORT" ? <p className=" text-sm text-white">{messages.message}</p> : ""}
+  const yearFormat = time.slice(0, 10);
+  const timerFormat = time.slice(11, 19);
+  console.log(messages.type);
+  if (messages.type === "TRADING_REPORT") {
 
-    </div>
-  </>
-);
+  }
+
+
+  return (
+    <>
+      <div className="bg-transparent float-left w-[49%] h-[95%]  absolute left-0 bottom-0 ">
+        <h1 className="text-yellow-300">ws {isOpen ? "Connected" : "Disconnected"}</h1>
+        {ws && <p className="text-yellow-300">Reconnecting momentarily...</p>}
+        <p className="text-sm text-white">
+          🕑 Time : {timerFormat} {yearFormat}
+        </p>
+        <p className=" text-sm text-white"> 🔴 Status : {messages.type === "FEED" ? messages.message : ""}</p>
+      </div>
+
+      <div className="bg-transparent float-left w-[49%]  h-[95%] absolute right-0 bottom-0">
+        <h1 className=" text-sm text-yellow-300"> 🔴 Ordered</h1>
+        {messages.type === "TRADING_REPORT" ? <p className=" text-sm text-white">{messages.message}</p> : ""}
+
+      </div>
+    </>
+  );
 };
 
 export default Logs;
