@@ -4,7 +4,7 @@ const URL = "ws://localhost:8000/ws/v1";
 
 const Logs = () => {
   const clientRef = useRef(null);
-  const [webSocket, setWebSocket] = useState < any > (null);
+  const [webSocket, setWebSocket] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const [msg, setMsg] = useState("");
@@ -18,21 +18,21 @@ const Logs = () => {
 
   // Only set up the websocket once
   // if (!clientRef.current) {
-  //   const client = new WebSocket(URL);
-  //   clientRef.current = client;
+  //   const webSocket = new WebSocket(URL);
+  //   clientRef.current = webSocket;
 
-  //   window.client = client;
+  //   window.webSocket = webSocket;
 
-  //   client.onerror = (e) => console.error(e);
+  //   webSocket.onerror = (e) => console.error(e);
 
   if (webSocket) {
-    client.onopen = () => {
+    webSocket.onopen = () => {
       console.log("ws opened");
       setIsOpen(true);
-      client.send("ping");
+      webSocket.send("ping");
     };
 
-    client.onclose = () => {
+    webSocket.onclose = () => {
       setIsOpen(false);
       setTimeout(() => {
         reconnect()
@@ -60,7 +60,7 @@ const reconnect = () => {
 
 const handleWebSocket = () => {
   if (webSocket) {
-    client.onmessage = (message) => {
+    webSocket.onmessage = (message) => {
       const parsedData = JSON.parse(message.data);
       feeds.push(parsedData)
       console.log("feeedss ->>> " + feeds)
@@ -81,7 +81,7 @@ const handleWebSocket = () => {
 //   // Dereference, so it will set up next time
 //   clientRef.current = null;
 
-//   client.close();
+//   webSocket.close();
 // };
 
 
@@ -98,7 +98,7 @@ return (
   <>
     <div className="bg-transparent float-left w-[49%] h-[95%]  absolute left-0 bottom-0 ">
       <h1 className="text-yellow-300">Websocket {isOpen ? "Connected" : "Disconnected"}</h1>
-      {waitingToReconnect && <p className="text-yellow-300">Reconnecting momentarily...</p>}
+      {webSocket && <p className="text-yellow-300">Reconnecting momentarily...</p>}
       <p className="text-sm text-white">
         🕑 Time : {timerFormat} {yearFormat}
       </p>
