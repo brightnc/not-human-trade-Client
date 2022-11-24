@@ -22,7 +22,6 @@ const Trade = () => {
 
   const [tf, setTf] = useState("");
 
-
   const [rsiLenght, setRsiLenght] = useState(0);
   const [ema, setEma] = useState({
     fast: 0,
@@ -139,7 +138,7 @@ const Trade = () => {
 
       <div className="w-auto h-[600px] mx-8 bg-transparent bg-black">
         <div className="w-1/2 float-left pl-5 border rounded-md h-1/2 p-9 ">
-          <div className="flex ">
+          <div className="flex w-full">
             <h2 className="text-2xl mt-2 mb-6 text-[#F3c535] font-bold  text-center">
               Indicator
             </h2>
@@ -177,135 +176,134 @@ const Trade = () => {
             /> */}
             </div>
           </div>
+          <div className="w-full">
+            <form action="" className="mt-2 ">
+              <span className="mr-[5.5rem] text-[#848e9c]">RSI</span>
+              <input
+                type="number"
+                id="rsiLenght"
+                placeholder="Lenght"
+                className="border border-solid rounded-xl pl-1 py-0 text-sm"
+                onChange={(e) => setRsiLenght(Number(e.target.value))}
+                pattern=""
+              />
+              <input
+                type="checkbox"
+                checked={selectRSI}
+                className="ml-5 w-5 rounded-full"
+                onChange={() => setSelectRSI(!selectRSI)}
+              />
+            </form>
 
-          <form action="" className="mt-2 flex">
-            <span className="mr-[5.5rem] text-[#848e9c]">RSI</span>
-            <input
-              type="number"
-              id="rsiLenght"
-              placeholder="Lenght"
-              className="border border-solid rounded-xl pl-1 py-0 text-sm"
-              onChange={(e) => setRsiLenght(Number(e.target.value))}
-              pattern=""
-            />
-            <input
-              type="checkbox"
-              checked={selectRSI}
-              className="ml-5 w-5 rounded-full"
-              onChange={() => setSelectRSI(!selectRSI)}
-            />
-          </form>
+            <form action="" className="mt-3 flex">
+              <span className="mr-14 text-[#848e9c]">EMA</span>
+              <input
+                name="fast"
+                type="number"
+                id="emaF"
+                placeholder="Fast"
+                className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm"
+                onChange={changeHandlerEMA}
+              />
 
-          <form action="" className="mt-3 flex">
-            <span className="mr-14 text-[#848e9c]">EMA</span>
-            <input
-              name="fast"
-              type="number"
-              id="emaF"
-              placeholder="Fast"
-              className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm"
-              onChange={changeHandlerEMA}
-            />
+              <input
+                name="slow"
+                type="number"
+                id="emaS"
+                placeholder="Slow"
+                className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm"
+                onChange={changeHandlerEMA}
+              />
+              <input
+                type="checkbox"
+                checked={selectEMA}
+                className="ml-5 w-5 rounded-full"
+                onChange={() => setSelectEMA(!selectEMA)}
+              />
+            </form>
 
-            <input
-              name="slow"
-              type="number"
-              id="emaS"
-              placeholder="Slow"
-              className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm"
-              onChange={changeHandlerEMA}
-            />
-            <input
-              type="checkbox"
-              checked={selectEMA}
-              className="ml-5 w-5 rounded-full"
-              onChange={() => setSelectEMA(!selectEMA)}
-            />
-          </form>
+            <form action="" className="mt-3 flex">
+              <span className="mr-11 text-[#848e9c]">MACD</span>
+              <input
+                name="fast"
+                type="number"
+                id="macdF"
+                placeholder="Fast"
+                className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm w-40"
+                onChange={changeHandlerMACD}
+              />
+              <input
+                name="slow"
+                type="number"
+                id="macdS"
+                placeholder="Slow"
+                className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm w-40"
+                onChange={changeHandlerMACD}
+              />
+              <input
+                name="signal"
+                type="number"
+                id="macdSig"
+                placeholder="Signal"
+                className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm w-40"
+                onChange={changeHandlerMACD}
+              />
+              <input
+                type="checkbox"
+                checked={selectMACD}
+                className="ml-5 w-5 rounded-full"
+                onChange={() => setSelectMACD(!selectMACD)}
+              />
+            </form>
 
-          <form action="" className="mt-3 flex">
-            <span className="mr-11 text-[#848e9c]">MACD</span>
-            <input
-              name="fast"
-              type="number"
-              id="macdF"
-              placeholder="Fast"
-              className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm"
-              onChange={changeHandlerMACD}
-            />
-            <input
-              name="slow"
-              type="number"
-              id="macdS"
-              placeholder="Slow"
-              className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm"
-              onChange={changeHandlerMACD}
-            />
-            <input
-              name="signal"
-              type="number"
-              id="macdSig"
-              placeholder="Signal"
-              className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm"
-              onChange={changeHandlerMACD}
-            />
-            <input
-              type="checkbox"
-              checked={selectMACD}
-              className="ml-5 w-5 rounded-full"
-              onChange={() => setSelectMACD(!selectMACD)}
-            />
-          </form>
+            <form action="" className="mt-3 flex">
+              <span className="mr-2 text-[#848e9c]">Stochastic</span>
+              <input
+                disabled="true"
+                type="number"
+                placeholder="K Lenght 14"
+                className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm"
+              />
+              <input
+                disabled="true"
+                type="number"
+                placeholder="D Smoothing 3"
+                className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm"
+              />
+              <input
+                type="checkbox"
+                checked={selectSTO}
+                className="ml-5 w-5 rounded-full"
+                onChange={() => setSelectSTO(!selectSTO)}
+              />
+            </form>
 
-          <form action="" className="mt-3 flex">
-            <span className="mr-2 text-[#848e9c]">Stochastic</span>
-            <input
-              disabled="true"
-              type="number"
-              placeholder="K Lenght 14"
-              className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm"
-            />
-            <input
-              disabled="true"
-              type="number"
-              placeholder="D Smoothing 3"
-              className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm"
-            />
-            <input
-              type="checkbox"
-              checked={selectSTO}
-              className="ml-5 w-5 rounded-full"
-              onChange={() => setSelectSTO(!selectSTO)}
-            />
-          </form>
-
-          <form action="" className="mt-3 flex">
-            <span className="mr-1 text-[#848e9c]">Supertrend</span>
-            <input
-              name="atr"
-              type="number"
-              id="atr"
-              placeholder="ATR Lenght"
-              className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm "
-              onChange={changeHandlerSuperTrend}
-            />
-            <input
-              name="multiplier"
-              type="number"
-              id="multiplier"
-              placeholder="Factor"
-              className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm "
-              onChange={changeHandlerSuperTrend}
-            />
-            <input
-              type="checkbox"
-              checked={selectSUPER}
-              className="ml-5 w-5 rounded-full"
-              onChange={() => setSelectSUPER(!selectSUPER)}
-            />
-          </form>
-
-          
+            <form action="" className="mt-3 flex">
+              <span className="mr-1 text-[#848e9c]">Supertrend</span>
+              <input
+                name="atr"
+                type="number"
+                id="atr"
+                placeholder="ATR Lenght"
+                className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm "
+                onChange={changeHandlerSuperTrend}
+              />
+              <input
+                name="multiplier"
+                type="number"
+                id="multiplier"
+                placeholder="Factor"
+                className="border border-solid ml-5 rounded-xl pl-1 py-0 text-sm "
+                onChange={changeHandlerSuperTrend}
+              />
+              <input
+                type="checkbox"
+                checked={selectSUPER}
+                className="ml-5 w-5 rounded-full"
+                onChange={() => setSelectSUPER(!selectSUPER)}
+              />
+            </form>
+          </div>
         </div>
 
         <div className="w-1/2 h-full float-right">
@@ -317,13 +315,10 @@ const Trade = () => {
           />
         </div>
         <div className="w-1/2 h-1/2 float-left relative">
-        <Logs/>
-            {/* <div className="bg-white  float-left w-[49%] h-[95%]  absolute left-0 bottom-0 overflow-y-scroll ">LEFT</div>
+          <Logs />
+          {/* <div className="bg-white  float-left w-[49%] h-[95%]  absolute left-0 bottom-0 overflow-y-scroll ">LEFT</div>
             <div className="bg-white float-left w-[49%]  h-[95%] absolute right-0 bottom-0 overflow-y-scroll">RIGHT</div> */}
         </div>
-        
-
-        
       </div>
       <div className="flex items-center absolute left-96 gap-2 mt-3">
         <Run
