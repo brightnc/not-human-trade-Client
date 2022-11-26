@@ -73,7 +73,7 @@ const Logs = () => {
               time: parsedData.time,
               type: parsedData.type,
             });
-          } 
+          }
           setMessages(parsedData);
           setTime(parsedData.time);
           setMsg(parsedData.message);
@@ -141,21 +141,28 @@ const Logs = () => {
     <>
       <div className="bg-transparent float-left w-[49%] h-[95%]  absolute left-0 bottom-0 ">
         <h1 className="text-yellow-300">
-          ws {isOpen ? "Connected" : "Disconnected"}
+          Server {isOpen ? "Connected" : "Disconnected"}
         </h1>
-        {ws && <p className="text-yellow-300">Reconnecting momentarily...</p>}
+        {/* {ws && <p className="text-yellow-300">Reconnecting momentarily...</p>} */}
         <p className="text-sm text-white">
           🕑 Time : {timerFormat} {yearFormat}
         </p>
         <p className=" text-sm text-white">
           {" "}
-          🔴 Status : {messages.type === "FEED" ? messages.message : "ABCDS"}
+          🔴 Status :{" "}
+          {messages.type === "FEED"
+            ? messages.message
+            : "Waiting for Connection..."}
         </p>
       </div>
 
       <div className="bg-transparent float-left w-[49%]  h-[95%] absolute right-0 bottom-0">
         <h1 className=" text-sm text-yellow-300"> 🔴 Ordered</h1>
-        {messages.type === "TRADING_REPORT" ? <TradingReportList /> : "SSSSSS"}
+        {tradignReports.length > 0 ? (
+          <TradingReportList />
+        ) : (
+          <p className=" text-sm text-white">Waiting for Order...</p>
+        )}
       </div>
     </>
   );
